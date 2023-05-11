@@ -1,77 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const initialState = {
-	name: "Bomik",
-	age: 30,
+const useCharacterPosition = (step) => {
+	const [left, setLeft] = useState(0);
+	const [top, setTop] = useState(0);
+
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			switch (event.key) {
+				case "ArrowLeft":
+					setLeft((prev) => prev - step);
+					break;
+				case "ArrowRight":
+					setLeft((prev) => prev + step);
+					break;
+				case "ArrowUp":
+					setTop((prev) => prev - step);
+					break;
+				case "ArrowDown":
+					setTop((prev) => prev + step);
+					break;
+			}
+		};
+
+		document.addEventListener("keydown", handleKeyDown);
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [step]);
+
+	return [left, top];
 };
-
-function App() {
-	const [count, multiply, share] = useCounter(1, 3);
-
-	const [obj, setObj] = useMergeState(initialState);
-	console.log(obj);
-	return (
-		<div className="App">
-			<div className="counter">
-				<button onClick={multiply}>click *</button>
-				<button onClick={share}>click /</button>
-				<span>{count}</span>
-			</div>
-			<div className="mergeState">
-				<div>
-					<input
-						type="text"
-						onChange={(e) => setObj({ text: e.target.value })}
-					/>
-					<div>
-						<State obj={obj} />
-					</div>
-				</div>
-			</div>
-		</div>
-	);
-}
-const State = ({ obj }) => {
-	return (
-		<div style={{ display: "flex" }}>
-			<div>
-				{Object.keys(obj).map((el) => (
-					<span style={{ display: "block" }}>{el}</span>
-				))}
-			</div>
-			<div>
-				{Object.values(obj).map((el) => (
-					<span style={{ display: "block" }}>{el}</span>
-				))}
-			</div>
-		</div>
-	);
+const initialStyle = {
+	background: "blue",
+	width: 100,
+	height: 100,
+	position: "absolute",
+	left: 0,
+	top: 0,
+	transition: ".1s",
 };
-const useMergeState = (initialState) => {
-	const [state, setState] = useState(initialState);
+const App = () => {
+	const [left, top] = useCharacterPosition(50);
+	const [style, setStyle] = useState(initialStyle);
 
-	const mergeState = (changes) => {
-		setState((prev) => ({
+	useEffect(() => {
+		setStyle((prev) => ({
 			...prev,
-			...changes,
+			top,
+			left,
 		}));
-	};
+	}, [left, top]);
 
-	return [state, mergeState];
-};
-
-//
-const useCounter = (initValue = 1, delta = 2) => {
-	const [state, setState] = useState(initValue);
-
-	const multiply = () => {
-		setState((state) => state * delta);
-	};
-
-	const share = () => {
-		setState((state) => state / delta);
-	};
-
-	return [state, multiply, share];
+	return (
+		<div>
+			<h3>
+				[{left},{top}]
+			</h3>
+			<div style={style}></div>
+		</div>
+	);
 };
 export default App;
