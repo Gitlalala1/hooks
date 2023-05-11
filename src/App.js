@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useMemo } from "react";
 
 const useCharacterPosition = (step) => {
 	const [left, setLeft] = useState(0);
@@ -41,15 +41,23 @@ const initialStyle = {
 };
 const App = () => {
 	const [left, top] = useCharacterPosition(50);
-	const [style, setStyle] = useState(initialStyle);
+	//const [style, setStyle] = useState(initialStyle);
 
-	useLayoutEffect(() => {
-		setStyle((prev) => ({
-			...prev,
-			top,
+	const style = useMemo(() => {
+		return {
+			...initialStyle,
 			left,
-		}));
+			top,
+		};
 	}, [left, top]);
+
+	// useLayoutEffect(() => {
+	// 	setStyle((prev) => ({
+	// 		...prev,
+	// 		top,
+	// 		left,
+	// 	}));
+	// }, [left, top]);
 
 	const generateBlocks = (count) => {
 		const divs = [];
