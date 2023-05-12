@@ -5,34 +5,20 @@ import React, {
 	useRef,
 	useMemo,
 } from "react";
+import Child from "./child";
 
 const App = () => {
-	const inputRef = useRef();
-	const toggleRef = useRef(false);
-	const [toogleState, setToggleState] = useState(false);
-	const onFocus = () => {
-		inputRef.current.focus();
+	const refChild = useRef(null);
+	const clickApp = () => {
+		if (refChild.current) {
+			console.log(refChild.current.clickChild("green"));
+		}
 	};
-	const onChange = (e) => {
-		if (e.target.value === "blur") inputRef.current?.blur();
-	};
-	const changeToggleRef = () => {
-		toggleRef.current = !toggleRef.current;
-		console.log("toggle ref");
-	};
-	const changeToggleState = () => {
-		setToggleState((prev) => !prev);
-		console.log("toggle state");
-	};
-	console.log("render");
 	return (
 		<div>
-			<input type="text" ref={inputRef} onChange={onChange} />
-			<button onClick={onFocus}>Focus</button>
-			<div>
-				<button onClick={changeToggleRef}>toggle ref</button>
-				<button onClick={changeToggleState}>toggle state</button>
-			</div>
+			<h1>App comp</h1>
+			<Child ref={refChild} />
+			<button onClick={clickApp}>click app</button>
 		</div>
 	);
 };
