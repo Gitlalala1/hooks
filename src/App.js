@@ -1,24 +1,15 @@
-import React, {
-	useState,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useMemo,
-} from "react";
-import Child from "./child";
-
+import React from "react";
+import { useToggle, useToggleWithReducer } from "./hooks/useToggle";
 const App = () => {
-	const refChild = useRef(null);
-	const clickApp = () => {
-		if (refChild.current) {
-			console.log(refChild.current.clickChild("green"));
-		}
-	};
+	const [toggle, setToggle] = useToggleWithReducer();
+	console.log(toggle);
 	return (
 		<div>
-			<h1>App comp</h1>
-			<Child ref={refChild} />
-			<button onClick={clickApp}>click app</button>
+			<div className="toggle">
+				<button
+					onClick={() => setToggle(!toggle)}
+				>{`click toggle: ${toggle}`}</button>
+			</div>
 		</div>
 	);
 };
