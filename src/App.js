@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useToggle, useToggleWithReducer } from "./hooks/useToggle";
 import useEventListener from "./hooks/useEventListener";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 const UseToggleComp = () => {
 	const [toggle, setToggle] = useToggleWithReducer();
 	return (
@@ -17,7 +18,6 @@ const UseToggleComp = () => {
 const UseEventListenerComp = () => {
 	const [coords, setCoords] = useState([]);
 	const onMouseMove = useCallback((event) => {
-		console.log(event);
 		const { clientX, clientY } = event;
 		const newPoint = { x: clientX, y: clientY };
 
@@ -44,8 +44,26 @@ const UseEventListenerComp = () => {
 	);
 };
 
+const UseLocalStorageComp = () => {
+	const [storage, setStorage] = useLocalStorage("name_default", "Default");
+	const [value, setValue] = useState(null);
+	console.log(window.localStorage);
+	const changeValue = (e) => {
+		setValue(e.target.value);
+		setStorage(e.target.value);
+	};
+	console.log(storage, value);
+	return (
+		<div>
+			<p>state:{value}</p>
+			<p>localstorage:{storage}</p>
+			<input type="text" onChange={changeValue} />
+		</div>
+	);
+};
+
 const App = () => {
-	return <UseEventListenerComp />;
+	return <UseLocalStorageComp />;
 };
 
 export default App;
