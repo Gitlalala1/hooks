@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useToggle, useToggleWithReducer } from "./hooks/useToggle";
 import useEventListener from "./hooks/useEventListener";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import { useWindowSize } from "./hooks/useWindowSize";
 const UseToggleComp = () => {
 	const [toggle, setToggle] = useToggleWithReducer();
 	return (
@@ -62,8 +63,13 @@ const UseLocalStorageComp = () => {
 	);
 };
 
+const UseWindowSize = () => {
+	const sizeWindow = useWindowSize();
+	console.log(sizeWindow);
+};
+
 const App = () => {
-	return <UseLocalStorageComp />;
+	return <UseWindowSize />;
 };
 
 export default App;
