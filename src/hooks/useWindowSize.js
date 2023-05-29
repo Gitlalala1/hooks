@@ -2,9 +2,13 @@ import { useCallback, useState, useEffect } from "react";
 
 import useEventListener from "./useEventListener";
 
-export const useWindowSize = () => {
+export const useWindowSize = (count) => {
 	const [size, setSize] = useState([0, 0]);
-	console.log("render");
+
+	useEffect(() => {
+		console.log(count);
+	}, [count]);
+
 	useEffect(() => {
 		const { innerWidth, innerHeight } = window;
 		setSize([innerWidth, innerHeight]);

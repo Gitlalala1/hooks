@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useToggle, useToggleWithReducer } from "./hooks/useToggle";
 import useEventListener from "./hooks/useEventListener";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { useWindowSize } from "./hooks/useWindowSize";
+import { useElementSize } from "./hooks/useElementSize";
 const UseToggleComp = () => {
 	const [toggle, setToggle] = useToggleWithReducer();
 	return (
@@ -64,12 +65,27 @@ const UseLocalStorageComp = () => {
 };
 
 const UseWindowSize = () => {
-	const sizeWindow = useWindowSize();
+	const sizeWindow = useWindowSize(5);
 	console.log(sizeWindow);
 };
 
+const UseElementSize = () => {
+	const ref = useRef();
+	console.log(ref);
+	const size = useElementSize(ref);
+	console.log(size);
+	return (
+		<div
+			ref={ref}
+			style={{ width: "60%", height: 150, background: "red", display: "flex" }}
+		>
+			size:{size.width}x{size.height}
+		</div>
+	);
+};
+
 const App = () => {
-	return <UseWindowSize />;
+	return <UseElementSize />;
 };
 
 export default App;
